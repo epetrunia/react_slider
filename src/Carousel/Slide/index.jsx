@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import styles from './Slide.module.scss';
+import classNames from 'classnames';
 
 class Slide extends Component {
   constructor(props) {
@@ -18,9 +20,12 @@ class Slide extends Component {
   render() {
     const { slide, isCurrent, download } = this.props;
     const { error } = this.state;
-    if (!error) {
+    const displaySlide = classNames(styles.slide, {
+      [styles.currentSlide]: isCurrent,
+    });
+    if (download && !error) {
       return (
-        <figure>
+        <figure className={displaySlide}>
           <img src={slide.src} alt={slide.title} />
           <figcaption>
             <h1>{slide.title}</h1>
@@ -28,6 +33,8 @@ class Slide extends Component {
           </figcaption>
         </figure>
       );
+    } else {
+      return null;
     }
   }
 }
