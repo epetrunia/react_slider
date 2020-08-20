@@ -66,7 +66,7 @@ export class Carousel extends Component {
               key={item.id}
               isCurrent={currentIndex === index}
               download={Math.abs(index - currentIndex) < 2}
-              slide={item}
+              {...slides[currentIndex]}
             />
           ))}
           <Icon

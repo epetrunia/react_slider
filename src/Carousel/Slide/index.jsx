@@ -1,39 +1,70 @@
 import React, { Component } from 'react';
 import styles from './Slide.module.scss';
 import classNames from 'classnames';
+import plug from './error.jpg';
 
 class Slide extends Component {
   constructor(props) {
     super(props);
 
+    const img = new Image();
+    img.addEventListener('load', this.handleLoad);
+
     this.state = {
-      error: null,
+      img,
+      isLoaded: false,
     };
   }
 
-  handleError = () => {
+  handleLoad = () => {
     this.setState({
-      error: true,
+      isLoaded: true,
     });
   };
 
+  load = () => {
+    const { img } = this.state;
+    const { src } = this.props;
+    img.src = src;
+  };
+
+  componentDidMount() {
+    const { download } = this.props;
+    if (download) {
+      this.load();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { download, src } = this.props;
+    const { isLoaded } = this.state;
+    if (download && !isLoaded) {
+      this.load();
+    }
+    if (src !== prevProps.src) {
+      this.setState({
+        isLoaded: false,
+      });
+    }
+  }
+
   render() {
-    const { slide, isCurrent, download } = this.props;
-    const { error } = this.state;
+    const { isCurrent, src, title, description, download } = this.props;
+    const { isLoaded } = this.state;
     const displaySlide = classNames(styles.slide, {
       [styles.currentSlide]: isCurrent,
     });
-    if (download && !error) {
+    if (download) {
       return (
         <figure className={displaySlide}>
           <img
             className={styles.imageWrapper}
-            src={slide.src}
-            alt={slide.title}
+            src={isLoaded ? src : plug}
+            alt={title}
           />
           <figcaption className={styles.caption}>
-            <h1>{slide.title}</h1>
-            <p className={styles.description}>{slide.description}</p>
+            <h1>{title}</h1>
+            <p className={styles.description}>{description}</p>
           </figcaption>
         </figure>
       );
