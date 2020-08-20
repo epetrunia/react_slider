@@ -1,7 +1,48 @@
 .slide {
   display: none;
+  width: inherit;
+  height: inherit;
+
+  position: relative;
+  width: 100%;
+  height: inherit;
+}
+
+.imageWrapper {
+  position: relative;
+  height: inherit;
+  width: inherit;
+  object-fit: scale-down;
 }
 
 .currentSlide {
   display: block;
+}
+
+.caption {
+  width: inherit;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+
+  &:hover > .description {
+    visibility: visible;
+    max-height: 100px;
+    transition: max-height 0.5s;
+    text-align: center;
+  }
+}
+
+.description {
+  visibility: hidden;
+  max-height: 0;
+  text-align: left;
+  font-size: 17px;
 }

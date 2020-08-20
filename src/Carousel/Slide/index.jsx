@@ -26,10 +26,14 @@ class Slide extends Component {
     if (download && !error) {
       return (
         <figure className={displaySlide}>
-          <img src={slide.src} alt={slide.title} />
-          <figcaption>
+          <img
+            className={styles.imageWrapper}
+            src={slide.src}
+            alt={slide.title}
+          />
+          <figcaption className={styles.caption}>
             <h1>{slide.title}</h1>
-            <p>{slide.description}</p>
+            <p className={styles.description}>{slide.description}</p>
           </figcaption>
         </figure>
       );
