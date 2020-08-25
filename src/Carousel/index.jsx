@@ -8,6 +8,9 @@ import {
   mdiSkipNext,
   mdiFullscreen,
   mdiFullscreenExit,
+  mdiPlay,
+  mdiPause,
+  mdiCogOutline,
 } from '@mdi/js';
 
 export class Carousel extends Component {
@@ -18,6 +21,8 @@ export class Carousel extends Component {
       currentIndex: 0,
       isPlaying: false,
       isFullScreen: false,
+      delay: 2000,
+      isOpen: false,
     };
   }
 
@@ -39,23 +44,49 @@ export class Carousel extends Component {
 
   fullScreenToggler = () => {
     const { isFullScreen } = this.state;
-    if (isFullScreen) {
-      this.setState({
-        isFullScreen: false,
-      });
-    } else {
-      this.setState({
-        isFullScreen: true,
-      });
-    }
+    this.setState({
+      isFullScreen: !isFullScreen,
+    });
   };
+
+  autoplayToggler = () => {
+    const { isPlaying } = this.state;
+    this.setState({
+      isPlaying: !isPlaying,
+    });
+  };
+
+  settingToggler = () => {
+    const { isOpen } = this.state;
+    this.setState({
+      isOpen: !isOpen,
+    });
+  };
+
+  speedHandler = (event) => {
+    const value = Number(event.target.getAttribute('value'));
+    this.setState({
+      delay: value,
+    });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isPlaying, delay } = this.state;
+    clearTimeout(this.timeoutId);
+    this.timeoutId = null;
+    if (isPlaying) {
+      this.timeoutId = setTimeout(this.nextIndex, delay);
+    }
+  }
+
   render() {
     const { slides } = this.props;
-    const { currentIndex, isFullScreen } = this.state;
+    const { currentIndex, isFullScreen, isPlaying, isOpen } = this.state;
     const prevBtnStyle = classNames(styles.controlBtn, styles.prevBtn);
     const nextBtnStyle = classNames(styles.controlBtn, styles.nextBtn);
     const fullScreenBtn = classNames(styles.controlBtn, styles.fullScreenBtn);
-    console.log(isFullScreen);
+    const playBtnStyle = classNames(styles.controlBtn, styles.playBtn);
+    const settingBtnStyle = classNames(styles.controlBtn, styles.settingsBtn);
     return (
       <article className={styles.container}>
         <section
@@ -84,6 +115,36 @@ export class Carousel extends Component {
             onClick={this.fullScreenToggler}
             path={isFullScreen ? mdiFullscreenExit : mdiFullscreen}
           ></Icon>
+          <Icon
+            className={playBtnStyle}
+            onClick={this.autoplayToggler}
+            path={isPlaying ? mdiPause : mdiPlay}
+          />
+          <Icon
+            onClick={this.settingToggler}
+            className={settingBtnStyle}
+            path={mdiCogOutline}
+          />
+          {isOpen && (
+            <ul className={styles.settingsList}>
+              <li>Delay:</li>
+              <li value='1000' onClick={this.speedHandler}>
+                1 sec
+              </li>
+              <li value='2000' onClick={this.speedHandler}>
+                2 sec
+              </li>
+              <li value='3000' onClick={this.speedHandler}>
+                3 sec
+              </li>
+              <li value='4000' onClick={this.speedHandler}>
+                4 sec
+              </li>
+              <li value='5000' onClick={this.speedHandler}>
+                5 sec
+              </li>
+            </ul>
+          )}
         </section>
       </article>
     );

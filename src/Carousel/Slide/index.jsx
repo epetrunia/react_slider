@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Slide.module.scss';
 import classNames from 'classnames';
-import plug from './error.jpg';
 
 class Slide extends Component {
   constructor(props) {
@@ -13,8 +12,15 @@ class Slide extends Component {
     this.state = {
       img,
       isLoaded: false,
+      error: null,
     };
   }
+
+  handleError = () => {
+    this.setState({
+      error: true,
+    });
+  };
 
   handleLoad = () => {
     this.setState({
@@ -36,32 +42,22 @@ class Slide extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { download, src } = this.props;
-    const { isLoaded } = this.state;
-    if (download && !isLoaded) {
+    const { src } = this.props;
+    const { isLoaded, error } = this.state;
+    if (src !== prevProps.src && isLoaded && !error) {
       this.load();
-    }
-    if (src !== prevProps.src) {
-      this.setState({
-        isLoaded: false,
-      });
     }
   }
 
   render() {
     const { isCurrent, src, title, description, download } = this.props;
-    const { isLoaded } = this.state;
     const displaySlide = classNames(styles.slide, {
       [styles.currentSlide]: isCurrent,
     });
     if (download) {
       return (
         <figure className={displaySlide}>
-          <img
-            className={styles.imageWrapper}
-            src={isLoaded ? src : plug}
-            alt={title}
-          />
+          <img className={styles.imageWrapper} src={src} alt={title} />
           <figcaption className={styles.caption}>
             <h1>{title}</h1>
             <p className={styles.description}>{description}</p>
