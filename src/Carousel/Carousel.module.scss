@@ -48,32 +48,3 @@
   top: 0;
   right: 0;
 }
-
-.playBtn {
-  top: 0;
-  left: 0;
-}
-
-.settingsBtn {
-  top: 60px;
-  left: 0;
-  width: 45px;
-}
-
-.settingsList {
-  position: absolute;
-  top: 60px;
-  left: 50px;
-
-  list-style: none;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  & > li {
-    font-size: 15px;
-    padding: 10px 20px;
-  }
-  & > li:nth-child(n + 2):hover {
-    color: white;
-    cursor: pointer;
-  }
-}

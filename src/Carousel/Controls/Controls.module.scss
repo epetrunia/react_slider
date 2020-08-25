@@ -1,0 +1,37 @@
+.controlBtn {
+  width: 45px;
+  position: absolute;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.playBtn {
+  top: 0;
+  left: 0;
+}
+
+.settingsBtn {
+  top: 60px;
+  left: 0;
+}
+
+.settingsList {
+  position: absolute;
+  top: 60px;
+  left: 50px;
+
+  list-style: none;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  & > li {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+  & > li:nth-child(n + 2):hover {
+    color: white;
+    cursor: pointer;
+  }
+}
